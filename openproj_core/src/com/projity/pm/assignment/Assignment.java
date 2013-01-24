@@ -1496,10 +1496,10 @@ public final class Assignment implements Schedule, Association, Allocation, Dela
 			return 0.0D;
 		if (AdvancedOption.getInstance().isEarnedValueFieldsCumulative())
 			start = getStart(); // start from the beginning of the task and ignore the range start
-		double cost = actualCost(start,end);
-		if (cost == 0)
+		double bac = bac(start,end);  // cyclingzealot fix
+		if (bac == 0)
 			return 0;
-		return efficiency() * cost;
+		return work() * bac;
 //
 //		Query query = Query.getInstance();
 //		long boundaryStart = detail.getStart(); // always use assignment start and never start
