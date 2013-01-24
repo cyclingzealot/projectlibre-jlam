@@ -58,6 +58,7 @@ import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import org.apache.commons.collections.Closure;
 import org.apache.commons.collections.Predicate;
@@ -76,6 +77,8 @@ import com.projity.algorithm.buffer.CalculatedValues;
 import com.projity.association.Association;
 import com.projity.association.InvalidAssociationException;
 import com.projity.configuration.Configuration;
+import com.projity.contrib.util.Log;
+import com.projity.contrib.util.LogFactory;
 import com.projity.datatype.CanSupplyRateUnit;
 import com.projity.datatype.Duration;
 import com.projity.datatype.DurationFormat;
@@ -113,6 +116,7 @@ import com.projity.pm.assignment.timesheet.TimesheetHelper;
 import com.projity.pm.assignment.timesheet.TimesheetStatus;
 import com.projity.pm.assignment.timesheet.UpdatesFromTimesheet;
 import com.projity.pm.calendar.WorkCalendar;
+import com.projity.pm.calendar.WorkWeek;
 import com.projity.pm.costing.Accrual;
 import com.projity.pm.costing.EarnedValueCalculator;
 import com.projity.pm.costing.EarnedValueFields;
@@ -142,6 +146,7 @@ import com.projity.pm.time.MutableInterval;
 import com.projity.server.data.DataObject;
 import com.projity.strings.Messages;
 import com.projity.util.Alert;
+import com.projity.util.DateTime;
 import com.projity.util.Environment;
 /**
  * Class representing resource assignments
@@ -160,6 +165,8 @@ public final class Assignment implements Schedule, Association, Allocation, Dela
 	private transient long lastTimesheetUpdate = 0;
 	private transient int workflowState = AssignmentWorkflowState.NEW;
 	private transient boolean timesheetAssignment = false;
+	
+	private static Log log = LogFactory.getLog(Assignment.class);
 
 
 	public static Field getUnitsField() {
@@ -1487,6 +1494,9 @@ public final class Assignment implements Schedule, Association, Allocation, Dela
 		return ((double)baselineWork)/work;
 
 	}
+	
+	// bac * percent complete -- cyclingzealot
+	// Changed from:
 	//[(Actual % of completion / Expected % of completion) of an activity for a given period] * Actual cost of activity
 	public double bcwp(long start, long end) {
 		if (!isInRange(start,end))
@@ -1496,10 +1506,11 @@ public final class Assignment implements Schedule, Association, Allocation, Dela
 			return 0.0D;
 		if (AdvancedOption.getInstance().isEarnedValueFieldsCumulative())
 			start = getStart(); // start from the beginning of the task and ignore the range start
-		double bac = bac(start,end);  // cyclingzealot fix
+		double bac = bac(0,DateTime.getMaxDate().getTime());
+		double percentComplete = this.getPercentComplete();
 		if (bac == 0)
 			return 0;
-		return work() * bac;
+		return percentComplete * bac;
 //
 //		Query query = Query.getInstance();
 //		long boundaryStart = detail.getStart(); // always use assignment start and never start
@@ -1512,6 +1523,9 @@ public final class Assignment implements Schedule, Association, Allocation, Dela
 	}
 
 	public double bac(long start, long end) {
+		log.info("start " + start);
+		log.info("end " + end);
+		
 		if (!isInRange(start,end))
 			return NO_VALUE_DOUBLE;
 		Query query = Query.getInstance();
