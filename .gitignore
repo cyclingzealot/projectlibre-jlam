@@ -11,5 +11,4 @@ openproj_contrib/tmp/
 .classpath
 *.sw?
 .project
-rebuild.sh
 
