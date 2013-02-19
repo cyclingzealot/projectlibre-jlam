@@ -1466,18 +1466,39 @@ public final class Assignment implements Schedule, Association, Allocation, Dela
 	}
 
 	public double bcws(long start, long end) {
-		if (!isInRange(start,end))
+		String name = detail.getTask().getName();
+		
+		log.info("In bcws for " +name+ " with ");
+		
+		if (!isInRange(start,end)) {
+			log.info("Not in range, Returning  NO_VALUE_DOUBLE for bcws");
 			return NO_VALUE_DOUBLE;
+		}
 
 		if (AdvancedOption.getInstance().isEarnedValueFieldsCumulative())
 			start = getStart(); // start from the beginning of the task and ignore the range start
 
+		log.info("Comparing " +new Date(start)+ " and " +new Date(detail.effectiveBaselineStart())+ " (start and baseline start) for start date");
+		long clauseStart	= Math.max(start,detail.effectiveBaselineStart());
+		log.info("Comparing " +new Date(end)+ " and " +new Date(getStatusDate())+ " (end and statusDate for end date");
+		long clauseEnd		= Math.min(end,getStatusDate());
+		
+
+		log.info("bcws start for " +name+ ":" + new Date(clauseStart));
+		log.info("bcws end for " +name+ ":" + new Date(clauseEnd));
+
 		Query query = Query.getInstance();
-		SelectFrom clause = SelectFrom.getInstance().whereInRange(Math.max(start,detail.effectiveBaselineStart()),Math.min(end,getStatusDate()));
+		SelectFrom clause = SelectFrom.getInstance().whereInRange(
+			clauseStart,
+			clauseEnd
+		);
+		
 		query.selectFrom(clause)
 			.action(baselineData(COST,clause))
 			.execute();
-		return ((DoubleValue)query.getActionVisitor()).getValue();
+		double bcws = ((DoubleValue)query.getActionVisitor()).getValue();
+		log.info("Returning bcws for " +name+ ":  " + bcws);
+		return bcws;
 	}
 
 	public double efficiency() {
