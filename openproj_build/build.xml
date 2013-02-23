@@ -47,6 +47,7 @@
 				<include name="**/*.java" />
 				<!--exclude name="**/version.properties" / -->
 				<exclude name="test/**" />
+				<compilerarg value="-g:{lines,vars,source} -verbose"/>
 		</javac>
 	</target>
 	

@@ -1468,7 +1468,7 @@ public final class Assignment implements Schedule, Association, Allocation, Dela
 	public double bcws(long start, long end) {
 		String name = detail.getTask().getName();
 		
-		log.info("In bcws for " +name+ " with ");
+		log.info("In bcws for " +name);
 		
 		if (!isInRange(start,end)) {
 			log.info("Not in range, Returning  NO_VALUE_DOUBLE for bcws");
@@ -1782,7 +1782,10 @@ public final class Assignment implements Schedule, Association, Allocation, Dela
 		return bcwp(FieldContext.start(fieldContext),FieldContext.end(fieldContext));
 	}
 	public double getBcws(FieldContext fieldContext) {
-		return bcws(FieldContext.start(fieldContext),FieldContext.end(fieldContext));
+		String name = detail.getTask().getName();
+		double bcws = bcws(FieldContext.start(fieldContext),FieldContext.end(fieldContext));
+		log.info("In Assignment.getBcws for " + name + ", returning " + bcws);
+		return bcws;
 	}
 	public double getCv(FieldContext fieldContext) {
 		return EarnedValueCalculator.getInstance().cv(this,FieldContext.start(fieldContext),FieldContext.end(fieldContext));
@@ -1800,6 +1803,8 @@ public final class Assignment implements Schedule, Association, Allocation, Dela
 		return EarnedValueCalculator.getInstance().cpi(this,FieldContext.start(fieldContext),FieldContext.end(fieldContext));
 	}
 	public double getSpi(FieldContext fieldContext) {
+		String name = detail.getTask().getName();
+		log.info("In getSpi for " + name);
 		return EarnedValueCalculator.getInstance().spi(this,FieldContext.start(fieldContext),FieldContext.end(fieldContext));
 	}
 	public double getCsi(FieldContext fieldContext) {

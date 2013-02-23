@@ -58,6 +58,12 @@ import com.projity.pm.time.HasStartAndEnd;
 import com.projity.strings.Messages;
 import com.projity.util.DateTime;
 
+import com.projity.contrib.util.Log;
+import com.projity.contrib.util.LogFactory;
+
+import java.util.Date;
+
+
 /**
  * Implements the earned value calculation algorithms.  Currently, standard calculations
  * are implemented, with TCPI being calculated like Project 2003 (it was different in earlier versions).
@@ -67,6 +73,8 @@ public class EarnedValueCalculator {
 	private static final long defaultStart = 0;
 	private static final long defaultEnd = DateTime.getMaxDate().getTime();
 	private static EarnedValueCalculator instance = null;
+
+	private static Log log = LogFactory.getLog(EarnedValueCalculator.class);
 	
 	private double getDivideByZeroValue() {
 		return CalculationPreference.getActive().getEarnedValueDivideByZeroValue();
@@ -146,11 +154,30 @@ public class EarnedValueCalculator {
 		return cpi(ev,defaultStart,defaultEnd); 
 	}
 
+	public double spi(EarnedValueValues ev, long start, long end, String name) {
+		log.info(
+			"In EarnedValueCalculator.spi for " + name
+		);
+			
+		return this.spi(ev, start, end);
+	}
+
 	public double spi(EarnedValueValues ev, long start, long end) {
 		double bcws = ev.bcws(start,end);
+		double bcwp = ev.bcwp(start,end);
+
+		log.info(
+			"In EarnedValueCalculator.spi with \n" + 
+			" start: " + new Date(start) + "\n" +
+			" end: " + new Date(end) + "\n" +
+			" bcws: " + bcws + "\n" +
+			" bcwp: " + bcwp + "\n" +
+			"\n"
+		);
+
 		if (bcws == 0.0D) // prevent divide by 0
 			return getDivideByZeroValue();
-		return ev.bcwp(start,end) / bcws;
+		return bcwp / bcws;
 	}
 
 	public double spi(EarnedValueValues ev) {

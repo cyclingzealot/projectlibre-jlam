@@ -54,11 +54,17 @@ import java.util.Iterator;
 
 import com.projity.pm.costing.EarnedValueValues;
 
+import com.projity.contrib.util.Log;
+import com.projity.contrib.util.LogFactory;
+
+
+
 /**
  *
  */
 public class TimeDistributedDataConsolidator {
 
+	private static Log log = LogFactory.getLog(TimeDistributedDataConsolidator.class);
 
 	/* (non-Javadoc)
 	 * @see com.projity.pm.costing.EarnedValueValues#acwp(long, long)
@@ -105,6 +111,7 @@ public class TimeDistributedDataConsolidator {
 		while (i.hasNext()) {
 			result += ((EarnedValueValues)i.next()).bcws(start,end);
 		}
+		log.info("In TimeDistributedDataConsolidator.bcws, returning " + result);
 		return result;
 	}
 

@@ -164,6 +164,8 @@ import com.projity.util.DateTime;
 import com.projity.util.Environment;
 import com.projity.workspace.SavableToWorkspace;
 import com.projity.workspace.WorkspaceSetting;
+import com.projity.contrib.util.Log;
+import com.projity.contrib.util.LogFactory;
 /**
  * Project class
  */
@@ -218,6 +220,8 @@ public class Project implements Document, BelongsToDocument, HasKey, HasPriority
 	private transient Object resourceCache = null;
 	private transient List<Task> repaired = null;
 	private transient Date creationDate,lastModificationDate;
+
+	private static Log log = LogFactory.getLog(Project.class);
 
 	public NodeModel getTaskModel() {
 		if (taskModel == null)
@@ -1155,7 +1159,9 @@ public class Project implements Document, BelongsToDocument, HasKey, HasPriority
 	 * @see com.projity.pm.costing.EarnedValueValues#bcws(long, long)
 	 */
 	public double bcws(long start, long end) {
-		return TimeDistributedDataConsolidator.bcws(start,end,childrenToRollup());
+		double result  = TimeDistributedDataConsolidator.bcws(start,end,childrenToRollup());
+		log.info("In Project.bcws for " + this.getName() + ", returning " + result);
+		return result;
 	}
 
 	/* (non-Javadoc)
@@ -1352,6 +1358,7 @@ public class Project implements Document, BelongsToDocument, HasKey, HasPriority
 		return EarnedValueCalculator.getInstance().cpi(this,FieldContext.start(fieldContext),FieldContext.end(fieldContext));
 	}
 	public double getSpi(FieldContext fieldContext) {
+		log.info("In Project.getSpi()");
 		return EarnedValueCalculator.getInstance().spi(this,FieldContext.start(fieldContext),FieldContext.end(fieldContext));
 	}
 	public double getCsi(FieldContext fieldContext) {

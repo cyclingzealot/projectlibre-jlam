@@ -117,6 +117,8 @@ import com.projity.pm.snapshot.SnapshottableImpl;
 import com.projity.server.access.ErrorLogger;
 import com.projity.strings.Messages;
 import com.projity.util.DateTime;
+import com.projity.contrib.util.Log;
+import com.projity.contrib.util.LogFactory;
 
 /**
  * @stereotype thing
@@ -126,6 +128,8 @@ public class NormalTask extends Task implements Allocation, TaskSpecificFields,
 		EarnedValueFields, TimeDistributedFields, BaselineScheduleFields,
 		HasTaskIndicators {
 	static final long serialVersionUID = 273898992929L;
+	
+	private static Log log = LogFactory.getLog(NormalTask.class);
 
 
 //	Schedule schedule = null;
@@ -1290,7 +1294,10 @@ public class NormalTask extends Task implements Allocation, TaskSpecificFields,
 	}
 
 	public double bcws(long start, long end) {
-		return ((TaskSnapshot) getCurrentSnapshot()).bcws(start, end);
+		String name = this.getName();
+		double bcws = ((TaskSnapshot) getCurrentSnapshot()).bcws(start, end);
+		log.info("In NormalTask.bcws for "+name+", returning " + bcws);
+		return bcws;
 	}
 
 	boolean isInRange(long start, long finish) {
@@ -1533,9 +1540,11 @@ public class NormalTask extends Task implements Allocation, TaskSpecificFields,
 	}
 
 	public double getSpi(FieldContext fieldContext) {
+		String name = this.getName();
+		log.info("In NormalTask.getSpi for " + name);
 		return EarnedValueCalculator.getInstance().spi(this,
 				FieldContext.start(fieldContext),
-				FieldContext.end(fieldContext));
+				FieldContext.end(fieldContext), name);
 	}
 	public double getCsi(FieldContext fieldContext) {
 		return EarnedValueCalculator.getInstance().csi(this,FieldContext.start(fieldContext),FieldContext.end(fieldContext));

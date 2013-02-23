@@ -157,11 +157,13 @@ check_java() {
 }
 
 run_openproj() {
+	set -x
 	if [ "$LOG_LEVEL" ] && [ "x$LOG_LEVEL" = "xDEBUG" ]; then
 		"$JAVA_EXE" $JAVA_OPTS -jar "$OPENPROJ_HOME/projectlibre.jar" $ARGS > "$LOG_FILE"
 	else
 		"$JAVA_EXE" $JAVA_OPTS -jar "$OPENPROJ_HOME/projectlibre.jar" $ARGS > /dev/null 2>&1
 	fi
+	set +x
 }
 
 
