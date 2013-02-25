@@ -20,7 +20,7 @@ for i in $(seq 72); do echo -n '#'; done; echo
 
 echo
 set -x 
-projectlibre.bash $1 2>&1 | tee -a $LOGFILE
+if [ "$1" != "skipLaunch" ] ; then projectlibre.bash $1 2>&1 | tee -a $LOGFILE; fi
 set +x
 
 

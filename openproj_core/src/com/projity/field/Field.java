@@ -688,6 +688,11 @@ public class Field implements SummaryNames, Cloneable, Comparable, Finder, Compa
 
 	private Object getPropertyValue(Object object, FieldContext context) {
 		Object result = null;
+		
+		String objectClassName = object.getClass().getName();
+		
+		
+		
 		if (context == null)
 			context = specialFieldContext;
 
@@ -716,6 +721,8 @@ public class Field implements SummaryNames, Cloneable, Comparable, Finder, Compa
 				e.printStackTrace();
 			}
 		}
+		log.info("Field.getPropertyValue: object is of class " + objectClassName + ", retuning " + result);
+		
 		return result;
 	}
 

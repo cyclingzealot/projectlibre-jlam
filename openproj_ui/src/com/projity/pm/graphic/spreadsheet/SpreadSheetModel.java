@@ -51,6 +51,8 @@ package com.projity.pm.graphic.spreadsheet;
 
 import java.util.LinkedList;
 
+import org.jfree.util.Log;
+
 import com.projity.association.InvalidAssociationException;
 import com.projity.datatype.Duration;
 import com.projity.field.Field;
@@ -67,11 +69,14 @@ import com.projity.pm.graphic.spreadsheet.common.CommonSpreadSheetModel;
 import com.projity.util.ClassUtils;
 import com.projity.util.Environment;
 
+import com.projity.contrib.util.LogFactory;
+
 /**
  * 
  */
 public class SpreadSheetModel extends CommonSpreadSheetModel {
 	protected boolean readOnly;
+	private static com.projity.contrib.util.Log log = LogFactory.getLog(SpreadSheetModel.class);
 	/**
 	 * 
 	 */
@@ -93,7 +98,17 @@ public class SpreadSheetModel extends CommonSpreadSheetModel {
 	}
 
 	public Object getValueAt(int row, int col) {
-		return SpreadSheetUtils.getValueAt(row,col,getRowMultiple(),cache,colModel,fieldContext);
+		Object result = SpreadSheetUtils.getValueAt(row,col,getRowMultiple(),cache,colModel,fieldContext);
+		String resultClassName;
+		if(result != null )  {resultClassName = result.getClass().getName();}
+		else {resultClassName = "null";}
+		String resultString = "";
+		if(resultClassName == "java.lang.String") {
+			resultString = (String)result;
+		}
+		log.info("SpreadSheetModel.getValue returns an object of class "+resultClassName+" for positiong row "+row+", col "+col+", resultString "+resultString);
+	
+		return result;
 	}
 
 	public String getColumnName(int col) {
