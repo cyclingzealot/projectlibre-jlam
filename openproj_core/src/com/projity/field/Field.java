@@ -597,6 +597,16 @@ public class Field implements SummaryNames, Cloneable, Comparable, Finder, Compa
 		return summary != NONE;
 	}
 
+	
+	/**
+	 * Gets the value for the field.  This function decides who to call depending on whether or 
+	 * not the row is a parent or a leaf.
+	 * 
+	 * @param node
+	 * @param nodeModel
+	 * @param context
+	 * @return
+	 */
 	public Object getValue(Node node, WalkersNodeModel nodeModel, FieldContext context) {
 		Object result;
 		Object object = node.getImpl();
@@ -657,6 +667,16 @@ public class Field implements SummaryNames, Cloneable, Comparable, Finder, Compa
 			return getValue(objectRef.getObject(), context);
 	}
 
+	
+	/**
+	 * Calculates the value for fields who's value is dependant upon other fields
+	 * 
+	 * @param field
+	 * @param node
+	 * @param nodeModel
+	 * @param context
+	 * @return The value of the field
+	 */
 	private static Object getSummarizedValueForField(Field field, Node node, WalkersNodeModel nodeModel, FieldContext context) {
 		// group's special summaries handled here
 		if (context == null)
