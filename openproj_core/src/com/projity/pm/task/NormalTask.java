@@ -757,7 +757,7 @@ public class NormalTask extends Task implements Allocation, TaskSpecificFields,
 		
 		if (actualDuration != oldActualDuration) {
 			double percentComplete =((double)actualDuration) / getDurationMillis();
-			currentSchedule.setPercentComplete(percentComplete);
+			//currentSchedule.setPercentComplete(percentComplete); -- Don't understand why setPercentComplete should be changed
 			markTaskAsNeedingRecalculation(); // so it redraws
 		}
 	}
