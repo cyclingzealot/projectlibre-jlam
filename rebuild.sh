@@ -1,23 +1,27 @@
 #!/bin/bash
 
 LOGFILE=/tmp/projectlibre.`date '+%Y%m%d-%H%M'`.log
+export LOG_LEVEL=DEBUG
+echo Cleaning old log files
+for logfile in /tmp/projectlibre.*.log; do mv -v $logfile /tmp/old.`basename $logfile` ; done
+echo Logging to $LOGFILE
+
 set -x 
-cd /home/jlam/programmation/projets/projectlibre-jlam/
+cd `dirname $0`
 cd openproj_build/
 pwd
 rm -r build dist
-ant
+ant  -v | tee -a $LOGFILE
 cp resources/projectlibre.sh dist
 set +x
 
-for i in $(seq 72); do echo -n '#'; done
+for i in $(seq 72); do echo -n '#'; done; echo
+
 
 echo
-echo Logging to $LOGFILE
-read -p "Executer dist/projectlibre.sh?"
 set -x 
-[ "$REPLY" == "y" ] && dist/projectlibre.sh $1 2>&1 | tee $LOGFILE
+if [ "$1" != "skipLaunch" ] ; then projectlibre.bash $1 2>&1 | tee -a $LOGFILE; fi
 set +x
 
 
-cd /home/jlam/programmation/projets/projectlibre-jlam/
+cd -
