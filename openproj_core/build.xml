@@ -20,7 +20,9 @@
 			nowarn="on"
 			source="1.5"
 			target="1.5"
-			g=''>
+			g=''
+		>
+				<compilerarg value="-g -verbose -Xlint:unchecked"/>
 				<src path="${src}" />
 				<include name="**/*" />
 				<exclude name="**/version.properties" />
