@@ -30,7 +30,7 @@ in Exhibits A and B of the license at http://www.projity.com/license. You should
 use the latest text at http://www.projity.com/license for your modifications.
 You may not remove this license text from the source files.]
 
-Attribution Information: Attribution Copyright Notice: Copyright © 2006, 2007 
+Attribution Information: Attribution Copyright Notice: Copyright ï¿½ 2006, 2007 
 Projity, Inc. Attribution Phrase (not exceeding 10 words): Powered by OpenProj, 
 an open source solution from Projity. Attribution URL: http://www.projity.com 
 Graphic Image as provided in the Covered Code as file:  openproj_logo.png with 
@@ -910,9 +910,11 @@ public final class AssignmentDetail implements Schedule, HasCalendar, Cloneable,
 //			}
 		//	duration = getWorkContour().calcTotalBucketDuration(0);
 			
-			long d = getDuration();
-			if (d != 0)
-				setPercentComplete(((double)actualDuration) / d);
+			//The fact that the actual duration changed should not change the 
+			//% complete, imo -- Julien Lamarche jlam@credil.org
+			//long d = getDuration();
+			//if (d != 0)
+			//	setPercentComplete(((double)actualDuration) / d);
 		}
 	}
 	/* (non-Javadoc)

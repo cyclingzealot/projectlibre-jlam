@@ -19,7 +19,8 @@
 			debug="off"
 			nowarn="on"
 			source="1.5"
-			target="1.5">
+			target="1.5"
+			g=''>
 				<src path="${src}" />
 				<include name="**/*" />
 				<exclude name="**/version.properties" />
