@@ -1358,7 +1358,7 @@ public class Project implements Document, BelongsToDocument, HasKey, HasPriority
 		return EarnedValueCalculator.getInstance().cpi(this,FieldContext.start(fieldContext),FieldContext.end(fieldContext));
 	}
 	public double getSpi(FieldContext fieldContext) {
-		log.info("In Project.getSpi()");
+		log.debug("In Project.getSpi()");
 		return EarnedValueCalculator.getInstance().spi(this,FieldContext.start(fieldContext),FieldContext.end(fieldContext));
 	}
 	public double getCsi(FieldContext fieldContext) {

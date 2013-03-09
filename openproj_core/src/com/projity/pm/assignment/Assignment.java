@@ -1468,24 +1468,24 @@ public final class Assignment implements Schedule, Association, Allocation, Dela
 	public double bcws(long start, long end) {
 		String name = detail.getTask().getName();
 		
-		log.info("In bcws for " +name);
+		log.debug("In bcws for " +name);
 		
 		if (!isInRange(start,end)) {
-			log.info("Not in range, Returning  NO_VALUE_DOUBLE for bcws");
+			log.debug("Not in range, Returning  NO_VALUE_DOUBLE for bcws");
 			return NO_VALUE_DOUBLE;
 		}
 
 		if (AdvancedOption.getInstance().isEarnedValueFieldsCumulative())
 			start = getStart(); // start from the beginning of the task and ignore the range start
 
-		log.info("Comparing " +new Date(start)+ " and " +new Date(detail.effectiveBaselineStart())+ " (start and baseline start) for start date");
+		log.debug("Comparing " +new Date(start)+ " and " +new Date(detail.effectiveBaselineStart())+ " (start and baseline start) for start date");
 		long clauseStart	= Math.max(start,detail.effectiveBaselineStart());
-		log.info("Comparing " +new Date(end)+ " and " +new Date(getStatusDate())+ " (end and statusDate for end date");
+		log.debug("Comparing " +new Date(end)+ " and " +new Date(getStatusDate())+ " (end and statusDate for end date");
 		long clauseEnd		= Math.min(end,getStatusDate());
 		
 
-		log.info("bcws start for " +name+ ":" + new Date(clauseStart));
-		log.info("bcws end for " +name+ ":" + new Date(clauseEnd));
+		log.debug("bcws start for " +name+ ":" + new Date(clauseStart));
+		log.debug("bcws end for " +name+ ":" + new Date(clauseEnd));
 
 		Query query = Query.getInstance();
 		SelectFrom clause = SelectFrom.getInstance().whereInRange(
@@ -1497,7 +1497,7 @@ public final class Assignment implements Schedule, Association, Allocation, Dela
 			.action(baselineData(COST,clause))
 			.execute();
 		double bcws = ((DoubleValue)query.getActionVisitor()).getValue();
-		log.info("Returning bcws for " +name+ ":  " + bcws);
+		log.debug("Returning bcws for " +name+ ":  " + bcws);
 		return bcws;
 	}
 
@@ -1544,8 +1544,8 @@ public final class Assignment implements Schedule, Association, Allocation, Dela
 	}
 
 	public double bac(long start, long end) {
-		log.info("start " + start);
-		log.info("end " + end);
+		log.debug("start " + start);
+		log.debug("end " + end);
 		
 		if (!isInRange(start,end))
 			return NO_VALUE_DOUBLE;
@@ -1784,7 +1784,7 @@ public final class Assignment implements Schedule, Association, Allocation, Dela
 	public double getBcws(FieldContext fieldContext) {
 		String name = detail.getTask().getName();
 		double bcws = bcws(FieldContext.start(fieldContext),FieldContext.end(fieldContext));
-		log.info("In Assignment.getBcws for " + name + ", returning " + bcws);
+		log.debug("In Assignment.getBcws for " + name + ", returning " + bcws);
 		return bcws;
 	}
 	public double getCv(FieldContext fieldContext) {
@@ -1804,7 +1804,7 @@ public final class Assignment implements Schedule, Association, Allocation, Dela
 	}
 	public double getSpi(FieldContext fieldContext) {
 		String name = detail.getTask().getName();
-		log.info("In getSpi for " + name);
+		log.debug("In getSpi for " + name);
 		return EarnedValueCalculator.getInstance().spi(this,FieldContext.start(fieldContext),FieldContext.end(fieldContext));
 	}
 	public double getCsi(FieldContext fieldContext) {

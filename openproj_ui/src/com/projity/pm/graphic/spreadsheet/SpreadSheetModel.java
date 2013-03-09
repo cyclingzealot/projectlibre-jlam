@@ -106,7 +106,7 @@ public class SpreadSheetModel extends CommonSpreadSheetModel {
 		if(resultClassName == "java.lang.String") {
 			resultString = (String)result;
 		}
-		log.info("SpreadSheetModel.getValue returns an object of class "+resultClassName+" for positiong row "+row+", col "+col+", resultString "+resultString);
+		log.debug("SpreadSheetModel.getValue returns an object of class "+resultClassName+" for positiong row "+row+", col "+col+", resultString "+resultString);
 	
 		return result;
 	}

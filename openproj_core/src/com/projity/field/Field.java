@@ -721,7 +721,7 @@ public class Field implements SummaryNames, Cloneable, Comparable, Finder, Compa
 				e.printStackTrace();
 			}
 		}
-		log.info("Field.getPropertyValue: object is of class " + objectClassName + ", retuning " + result);
+		log.debug("Field.getPropertyValue: object is of class " + objectClassName + ", retuning " + result);
 		
 		return result;
 	}

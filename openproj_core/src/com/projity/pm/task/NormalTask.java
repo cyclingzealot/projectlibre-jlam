@@ -1296,7 +1296,7 @@ public class NormalTask extends Task implements Allocation, TaskSpecificFields,
 	public double bcws(long start, long end) {
 		String name = this.getName();
 		double bcws = ((TaskSnapshot) getCurrentSnapshot()).bcws(start, end);
-		log.info("In NormalTask.bcws for "+name+", returning " + bcws);
+		log.debug("In NormalTask.bcws for "+name+", returning " + bcws);
 		return bcws;
 	}
 
@@ -1541,7 +1541,7 @@ public class NormalTask extends Task implements Allocation, TaskSpecificFields,
 
 	public double getSpi(FieldContext fieldContext) {
 		String name = this.getName();
-		log.info("In NormalTask.getSpi for " + name);
+		log.debug("In NormalTask.getSpi for " + name);
 		return EarnedValueCalculator.getInstance().spi(this,
 				FieldContext.start(fieldContext),
 				FieldContext.end(fieldContext), name);
