@@ -256,7 +256,8 @@ public class SpreadSheetUtils {
 		if (node.isVoid())
 			return (col == 0) ? "" : null;
 		// TODO change when Field supports void
-		return getFieldInColumn(col,colModel).getValue(node, cache.getWalkersModel(), context);
+		Object returnValue = getFieldInColumn(col,colModel).getValue(node, cache.getWalkersModel(), context);
+		return returnValue;
 	}
 
 
