@@ -159,6 +159,10 @@ public abstract class Task implements HasKey, HasNotes, HasCalendar, HasDependen
 	protected long windowLateFinish = 0;
 
 	protected long actualStart = 0;
+	
+	// added for actualDuration bug jlam@credil.org
+	// https://sourceforge.net/p/projectlibre/tickets/58/
+	protected long actualStop = 0;  
 
 	protected long levelingDelay = 0L;
 	protected transient int calculationStateCount = 0;
@@ -1158,9 +1162,15 @@ public abstract class Task implements HasKey, HasNotes, HasCalendar, HasDependen
 
 /**
  * Actual duration is % complete * duration for all tasks including parents
+ * 
+ * Comment from jlam@credil.org:
+ * This is just completely wrong.  It should be something like 
+ * actualStop-actualStart.  But there is no actualStop property.
+ * -- jlam@credil.org
  */
 	public long getActualDuration() {
 		long duration = getDuration();
+		
 		long result = Math.round(getPercentComplete() * Duration.millis(duration));
 		return Duration.useTimeUnitOfInNone(result, duration);
 	}

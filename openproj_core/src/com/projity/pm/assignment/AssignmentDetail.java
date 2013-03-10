@@ -915,9 +915,9 @@ public final class AssignmentDetail implements Schedule, HasCalendar, Cloneable,
 			// but it would seem setPercentComplete needs to be called
 			// to perform the update of actual duration, so we just set it to what it was.
 			long d = getDuration();
-			if (d != 0)
+			//if (d != 0)
 				//setPercentComplete(((double)actualDuration) / d);
-				setPercentComplete(0.5);
+			//	setPercentComplete(0.5);
 		}
 	}
 	/* (non-Javadoc)
